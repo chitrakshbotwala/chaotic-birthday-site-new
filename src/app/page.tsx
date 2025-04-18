@@ -358,7 +358,7 @@ export default function HomePage() {
         },
         {
           title: "📖 The End",
-          text: "And they lived happily ever after with their polar bear friends! Though the bears continued to roast them mercilessly about their personality being just 'liking polar bears'.",
+          text: "And they lived happily ever after with their polar bear friends! Though the bears continued to roast them mercilessly about their personality being just 'liking polar bears ( AI GENERATED SHI BTW )'.",
           emoji: "❤️"
         }
       ];
@@ -572,7 +572,7 @@ export default function HomePage() {
           {isHacked ? 'SECURITY BREACH DETECTED' : 'Created with chaotic energy for a special friend who loves polar bears 💖'}
         </p>
         <p className={`text-sm ${isHacked ? 'text-red-300 font-glitch' : 'text-pink-300'} mt-2`}>
-          {isHacked ? 'SYSTEM COMPROMISED - DATA LEAK IN PROGRESS' : 'Add more images in the /public/assets/friends folder!'}
+          {isHacked ? 'SYSTEM COMPROMISED - DATA LEAK IN PROGRESS' : 'LOVE FROM CHITRAKSH , SOHAM BABE AND VATSAL AND DOOMIE AND AARUSH BHI THODA SA '}
         </p>
         <motion.p 
           className="text-yellow-200 font-bold mt-3 favourite-phrase"

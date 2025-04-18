@@ -36,21 +36,28 @@ const UNSPLASH_ACCESS_KEY = 'SPyOTsHJWRQbxDNITqz-T4Gb8o2sJdEgpj89yVqiJFg';
 export const getPolarBearImages = async (count: number = 5): Promise<ImageItem[]> => {
   try {
     // Make API call with valid Unsplash API key
+    console.log('Fetching polar bear images from Unsplash...');
     const response = await axios.get<UnsplashImageResponse[]>(
       `https://api.unsplash.com/photos/random?query=polar+bear&count=${count}`,
       {
         headers: {
           Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}`,
         },
+        timeout: 5000 // Add timeout of 5 seconds
       }
     );
     
-    return response.data.map((item) => ({
-      id: item.id,
-      url: item.urls.regular,
-      type: 'polar' as const,
-      caption: getRandomCaption('polar'),
-    }));
+    if (response.data && response.data.length > 0) {
+      console.log(`Successfully fetched ${response.data.length} polar bear images`);
+      return response.data.map((item) => ({
+        id: item.id || `polar-${Math.random()}`,
+        url: item.urls.regular,
+        type: 'polar' as const,
+        caption: getRandomCaption('polar'),
+      }));
+    } else {
+      throw new Error('No polar bear images returned from API');
+    }
   } catch (error) {
     console.error('Using fallback polar bear images:', error);
     // Fallback images if API fails
@@ -67,14 +74,22 @@ export const getPolarBearImages = async (count: number = 5): Promise<ImageItem[]
 export const getMemeImages = async (count: number = 5): Promise<ImageItem[]> => {
   try {
     // Using meme-api.com (formerly reddit API)
-    const response = await axios.get<MemeApiResponse>('https://meme-api.com/gimme/5');
+    console.log('Fetching memes from meme-api.com...');
+    const response = await axios.get<MemeApiResponse>('https://meme-api.com/gimme/5', {
+      timeout: 5000 // Add timeout of 5 seconds
+    });
     
-    return response.data.memes.map((meme) => ({
-      id: meme.postLink,
-      url: meme.url,
-      type: 'meme' as const,
-      caption: getRandomCaption('meme'),
-    }));
+    if (response.data && response.data.memes && response.data.memes.length > 0) {
+      console.log(`Successfully fetched ${response.data.memes.length} memes`);
+      return response.data.memes.map((meme) => ({
+        id: meme.postLink || `meme-${Math.random()}`,
+        url: meme.url,
+        type: 'meme' as const,
+        caption: getRandomCaption('meme'),
+      }));
+    } else {
+      throw new Error('No memes returned from API');
+    }
   } catch (error) {
     console.error('Using fallback meme images:', error);
     // Fallback to placeholder images
@@ -89,6 +104,7 @@ export const getMemeImages = async (count: number = 5): Promise<ImageItem[]> => 
 
 // Function to get jump scare images - use your own images or APIs
 export const getJumpScareImages = async (count: number = 3): Promise<ImageItem[]> => {
+  console.log('Setting up jumpscare images...');
   // In production, you might fetch these from your own API
   const jumpScareImages = [
     'https://i.imgur.com/3dCWCdK.jpeg', // Example scary image
@@ -98,13 +114,29 @@ export const getJumpScareImages = async (count: number = 3): Promise<ImageItem[]
     'https://i.imgur.com/NWKCxIY.jpeg',
   ];
   
-  return jumpScareImages.slice(0, count).map((url, i) => ({
-    id: `jumpscare-${i}`,
-    url,
-    type: 'jumpscare' as const,
-    isJumpScare: true,
-    caption: getRandomCaption('jumpscare'),
-  }));
+  try {
+    // Validate URLs before returning
+    console.log(`Preparing ${Math.min(count, jumpScareImages.length)} jumpscare images`);
+    return jumpScareImages.slice(0, count).map((url, i) => ({
+      id: `jumpscare-${i}`,
+      url,
+      type: 'jumpscare' as const,
+      isJumpScare: true,
+      caption: getRandomCaption('jumpscare'),
+    }));
+  } catch (error) {
+    console.error('Error setting up jumpscare images, using fallbacks:', error);
+    // Return a simple fallback
+    return [
+      {
+        id: 'fallback-jumpscare',
+        url: '/assets/glitch.svg',
+        type: 'jumpscare' as const,
+        isJumpScare: true,
+        caption: 'SYSTEM FAILURE DETECTED',
+      }
+    ];
+  }
 };
 
 // Function to load friend images from the public directory
@@ -198,7 +230,24 @@ export const mixAndRandomizeImages = (
   polarBearImages: ImageItem[],
   jumpScareImages: ImageItem[]
 ): ImageItem[] => {
-  const allImages = [...friendImages, ...memeImages, ...polarBearImages];
+  console.log('Mixing images:');
+  console.log(`- Friend images: ${friendImages.length}`);
+  console.log(`- Meme images: ${memeImages.length}`);
+  console.log(`- Polar bear images: ${polarBearImages.length}`);
+  console.log(`- Jump scare images: ${jumpScareImages.length}`);
+  
+  // Make sure all image items have proper URLs
+  const validatedMemes = memeImages.filter(img => img && img.url);
+  const validatedPolarBears = polarBearImages.filter(img => img && img.url);
+  const validatedJumpscares = jumpScareImages.filter(img => img && img.url);
+  
+  console.log('After validation:');
+  console.log(`- Friend images: ${friendImages.length}`);
+  console.log(`- Meme images: ${validatedMemes.length}`);
+  console.log(`- Polar bear images: ${validatedPolarBears.length}`);
+  console.log(`- Jump scare images: ${validatedJumpscares.length}`);
+  
+  const allImages = [...friendImages, ...validatedMemes, ...validatedPolarBears];
   
   // Randomly shuffle the array
   for (let i = allImages.length - 1; i > 0; i--) {
@@ -207,11 +256,16 @@ export const mixAndRandomizeImages = (
   }
   
   // Insert jump scare images randomly (but not at the very beginning)
-  jumpScareImages.forEach(jumpScareImg => {
-    const position = Math.floor(Math.random() * (allImages.length - 2)) + 2; 
-    allImages.splice(position, 0, jumpScareImg);
+  validatedJumpscares.forEach(jumpScareImg => {
+    if (allImages.length > 2) {
+      const position = Math.floor(Math.random() * (allImages.length - 2)) + 2;
+      allImages.splice(position, 0, jumpScareImg);
+    } else {
+      allImages.push(jumpScareImg);
+    }
   });
   
+  console.log(`Total mixed images: ${allImages.length}`);
   return allImages;
 };
 
