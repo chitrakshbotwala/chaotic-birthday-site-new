@@ -1,0 +1,28 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glitch" x="-20%" y="-20%" width="140%" height="140%">
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r" />
+      <feOffset in="r" result="r" dx="-5" dy="0">
+        <animate attributeName="dx" values="-5;-2;-9;-2;-7;-4;-8;-3;-5" dur="0.8s" repeatCount="indefinite" />
+      </feOffset>
+      <feColorMatrix type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="g" />
+      <feOffset in="g" result="g" dx="0" dy="0">
+        <animate attributeName="dx" values="0;-3;0;2;0;4;0;2;0" dur="1.2s" repeatCount="indefinite" />
+      </feOffset>
+      <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="b" />
+      <feOffset in="b" result="b" dx="5" dy="0">
+        <animate attributeName="dx" values="5;1;7;2;8;3;5;6;5" dur="0.6s" repeatCount="indefinite" />
+      </feOffset>
+      <feBlend in="r" in2="g" mode="screen" result="blend" />
+      <feBlend in="blend" in2="b" mode="screen" result="blend" />
+    </filter>
+  </defs>
+  <rect width="400" height="300" fill="#111" />
+  <g filter="url(#glitch)">
+    <text x="200" y="140" font-family="monospace" font-size="40" text-anchor="middle" fill="#f00" stroke="#0ff" stroke-width="1">ERROR</text>
+    <text x="200" y="180" font-family="monospace" font-size="30" text-anchor="middle" fill="#0ff" stroke="#f0f" stroke-width="1">Image Corrupted</text>
+  </g>
+  <rect y="50" width="400" height="2" fill="#fff" opacity="0.3">
+    <animate attributeName="y" values="0;300;0" dur="3s" repeatCount="indefinite" />
+  </rect>
+</svg> 

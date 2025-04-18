@@ -1,26 +1,434 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  overflow-x: hidden;
+}
+
+/* Chaotic Gen Z Styling */
+@keyframes rainbow-bg {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.chaotic-bg {
+  background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+  background-size: 1800% 1800%;
+  animation: rainbow-bg 18s ease infinite;
+}
+
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+.spinning {
+  animation: spin 8s linear infinite;
+}
+
+.pulsing {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.neon-text {
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6, 0 0 25px #0073e6;
+}
+
+.neon-green-text {
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #00ff00, 0 0 20px #00ff00, 0 0 25px #00ff00;
+}
+
+.neon-pink-text {
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff00ff, 0 0 20px #ff00ff, 0 0 25px #ff00ff;
+}
+
+.sparkle {
+  position: relative;
+}
+
+.sparkle::after {
+  content: "✨";
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  animation: pulse 2s infinite;
+}
+
+.meme-overlay {
+  position: absolute;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  text-transform: uppercase;
+  color: white;
+  text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
+  font-size: 2rem;
+  text-align: center;
+  width: 100%;
+}
+
+.meme-overlay-top {
+  top: 10px;
+}
+
+.meme-overlay-bottom {
+  bottom: 10px;
+}
+
+/* For the image gallery */
+.gallery-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+  padding: 20px;
+}
+
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+  transform: scale(1.05);
+  z-index: 10;
+}
+
+/* Jump scare styling */
+.jumpscare {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: invert(100%);
+}
+
+.jumpscare img {
+  max-width: 90vw;
+  max-height: 90vh;
+  animation: pulse 0.3s infinite;
+}
+
+/* Gen Z caption styles */
+.caption-container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.7);
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+
+.emoji-rain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.emoji {
+  position: absolute;
+  font-size: 24px;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh);
+  }
+}
+
+/* Glitch effect styles */
+.glitch {
+  position: relative;
+  animation: glitch-shake 0.2s infinite;
+}
+
+@keyframes glitch-shake {
+  0% { transform: translate(0); }
+  25% { transform: translate(2px, 2px); }
+  50% { transform: translate(-2px, -2px); }
+  75% { transform: translate(-2px, 2px); }
+  100% { transform: translate(2px, -2px); }
+}
+
+.glitch-lines::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    transparent,
+    transparent 1px,
+    rgba(255, 0, 0, 0.1) 1px,
+    rgba(255, 0, 0, 0.1) 2px
+  );
+  pointer-events: none;
+  animation: glitch-lines 0.3s linear infinite;
+}
+
+@keyframes glitch-lines {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 10px; }
+}
+
+.font-glitch {
+  text-shadow: 
+    2px 0 0 rgba(255, 0, 0, 0.5),
+    -2px 0 0 rgba(0, 255, 255, 0.5);
+  animation: text-glitch 0.5s infinite;
+}
+
+@keyframes text-glitch {
+  0% { text-shadow: 2px 0 0 rgba(255, 0, 0, 0.5), -2px 0 0 rgba(0, 255, 255, 0.5); }
+  25% { text-shadow: -2px 0 0 rgba(255, 0, 0, 0.5), 2px 0 0 rgba(0, 255, 255, 0.5); }
+  50% { text-shadow: 1px 0 0 rgba(255, 0, 0, 0.5), -1px 0 0 rgba(0, 255, 255, 0.5); }
+  75% { text-shadow: -1px 0 0 rgba(255, 0, 0, 0.5), 1px 0 0 rgba(0, 255, 255, 0.5); }
+  100% { text-shadow: 2px 0 0 rgba(255, 0, 0, 0.5), -2px 0 0 rgba(0, 255, 255, 0.5); }
+}
+
+/* Haunted cursor effect */
+.haunted-cursor::after {
+  content: '';
+  position: fixed;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(255,0,0,0.15) 0%, rgba(0,0,0,0) 70%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: screen;
+  animation: cursor-pulse 2s infinite;
+}
+
+@keyframes cursor-pulse {
+  0% { opacity: 0.5; transform: scale(1) translate(-50%, -50%); }
+  50% { opacity: 0.8; transform: scale(1.1) translate(-50%, -50%); }
+  100% { opacity: 0.5; transform: scale(1) translate(-50%, -50%); }
+}
+
+/* Creepy flicker effect */
+.flicker {
+  animation: flicker 8s infinite;
+}
+
+@keyframes flicker {
+  0% { opacity: 1; }
+  1% { opacity: 0.8; }
+  2% { opacity: 1; }
+  59% { opacity: 1; }
+  60% { opacity: 0.2; }
+  61% { opacity: 1; }
+  89% { opacity: 1; }
+  90% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+/* Matrix code rain effect overlay */
+.matrix-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.07;
+  background: linear-gradient(to bottom, transparent, rgba(0, 255, 0, 0.2)),
+              url('/assets/matrix-code.png') repeat;
+  animation: matrix-fall 20s linear infinite;
+}
+
+@keyframes matrix-fall {
+  from { background-position: 0 0; }
+  to { background-position: 0 1000px; }
+}
+
+/* PhotoFilter Effects */
+@keyframes glitch-shake {
+  0% {
+    transform: translate(2px, 0);
+  }
+  25% {
+    transform: translate(-2px, 0);
+  }
+  50% {
+    transform: translate(2px, 0);
+  }
+  75% {
+    transform: translate(-2px, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+.glitch-lines::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    transparent,
+    transparent 2px,
+    rgba(255, 0, 128, 0.2) 2px,
+    rgba(255, 0, 128, 0.2) 4px
+  );
+  pointer-events: none;
+  animation: glitch-scan 4s linear infinite;
+}
+
+@keyframes glitch-scan {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.matrix-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(0, 255, 0, 0.1) 90%,
+    rgba(0, 255, 0, 0.2) 100%
+  );
+  opacity: 0.7;
+  mix-blend-mode: overlay;
+}
+
+.matrix-overlay::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    0deg,
+    transparent 0%,
+    rgba(0, 255, 0, 0.2) 50%,
+    transparent 100%
+  );
+  animation: matrix-scan 3s linear infinite;
+}
+
+@keyframes matrix-scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+/* Favourite Phrase Effects */
+@keyframes text-shadow-pulse {
+  0% {
+    text-shadow: 0 0 4px rgba(255, 0, 255, 0.7), 0 0 8px rgba(255, 0, 255, 0.5), 0 0 12px rgba(255, 0, 255, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 8px rgba(255, 0, 255, 0.9), 0 0 16px rgba(255, 0, 255, 0.7), 0 0 24px rgba(255, 0, 255, 0.5);
+  }
+  100% {
+    text-shadow: 0 0 4px rgba(255, 0, 255, 0.7), 0 0 8px rgba(255, 0, 255, 0.5), 0 0 12px rgba(255, 0, 255, 0.3);
+  }
+}
+
+.favourite-phrase {
+  animation: text-shadow-pulse 2s infinite;
+}
+
+.favourite-phrase-bg {
+  background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
+  background-size: 400% 400%;
+  animation: rainbow-bg 3s ease infinite;
+}
+
+.marquee-text {
+  white-space: nowrap;
+  animation: marquee 8s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* Shake animation for invalid inputs */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-10px); }
+  40% { transform: translateX(10px); }
+  60% { transform: translateX(-10px); }
+  80% { transform: translateX(10px); }
+  100% { transform: translateX(0); }
+}
+
+.animate-shake {
+  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
 }
